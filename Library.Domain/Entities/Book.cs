@@ -9,13 +9,15 @@ namespace Library.Domain.Entities
 {
     public class Book
     {
-        public Guid Id { get; set; }
-        public Guid GenreId { get; set; }
-        public Guid AuthorId { get; set; }
+        public int Id { get; set; }
+        public int GenreId { get; set; }
+        public Genre Genre { get; set; }
+        public int AuthorId { get; set; }
+        public Author Author { get; set; }
         public string ISBN { get; set; }
         public string Name { get; set; }
-        public DateTime TakeDateTime { get; set; }
-        public  DateTime ReturnDateTime { get; set; }
+        public DateTime? TakeDateTime { get; set; }
+        public  DateTime? ReturnDateTime { get; set; }
         public  BookAvailability Status { get; set; }
     }
 }
