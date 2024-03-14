@@ -1,6 +1,7 @@
 using Library.Infrastructure.Data;
 using Library.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Library.Application.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("MSSqlConnection"));
+builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("MSSqlConnection")).AddApplication();
 
 var app = builder.Build();
 

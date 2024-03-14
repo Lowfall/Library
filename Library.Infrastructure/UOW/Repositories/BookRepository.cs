@@ -25,7 +25,10 @@ namespace Library.Infrastructure.UOW.Repositories
 
         public async Task<Book> Get(int id)
         {
-            return await context.Books.Where(b => b.Id == id).FirstOrDefaultAsync();
+            var book = context.Books.Where(b => b.Id == id).FirstOrDefaultAsync().Result;
+            book.Author = context.Authors.Where(a => a.Id == book.AuthorId).FirstOrDefaultAsync().Result;
+            book.Genre = context.Genres.Where(g => g.Id == book.GenreId).FirstOrDefaultAsync().Result;
+            return book;
         }
 
         public async Task Add(Book book)
