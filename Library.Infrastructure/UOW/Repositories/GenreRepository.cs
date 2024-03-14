@@ -41,5 +41,15 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             context.Genres.Update(genre);
         }
+
+        public async Task<Genre> GetByName(string name)
+        {
+            return await context.Genres.Where(g => g.Name == name).FirstOrDefaultAsync();
+        }
+
+        public bool Exists(int id)
+        {
+            return context.Genres.Any(g => g.Id == id);
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace Library.Infrastructure.UOW
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext context;
+        public ApplicationDbContext context {  get;}
         public IBookRepository Books { get; }
         public IAuthorRepository Authors { get; }
         public IGenreRepository Genres { get; }

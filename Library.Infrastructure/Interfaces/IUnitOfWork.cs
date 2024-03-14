@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Infrastructure.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace Library.Infrastructure.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
+        ApplicationDbContext context { get; }
         IBookRepository Books { get; }
         IAuthorRepository Authors { get; }
         IGenreRepository Genres { get; }

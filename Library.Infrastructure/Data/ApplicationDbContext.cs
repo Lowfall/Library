@@ -44,6 +44,7 @@ namespace Library.Infrastructure.Data
                 .HasForeignKey(b => b.GenreId)
                 .IsRequired();
 
+
             modelBuilder.Entity<Author>().HasData([
                 new Author { Id=1, Name = "Stephen", Surname = "King" },
                 new Author { Id=2, Name = "Chuck", Surname = "Palahniuk" },
@@ -57,11 +58,11 @@ namespace Library.Infrastructure.Data
                 ]);
 
             modelBuilder.Entity<Book>().HasData([
-                new Book {Id = 1, AuthorId = 1, GenreId = 1, ISBN = "978-5-17-065495-6", Name="IT", TakeDateTime = DateTime.Now, Status = BookAvailability.Taken},
-                new Book {Id = 2, AuthorId = 1, GenreId = 1, ISBN = "978-5-17-062440-3", Name="Carrie", TakeDateTime = DateTime.Now - TimeSpan.FromHours(4), Status = BookAvailability.Taken},
-                new Book {Id = 3, AuthorId = 2, GenreId = 3, ISBN = "978-5-17-147507-9", Name="Fight Club", TakeDateTime = new DateTime(2023,12,16,16,48,29),ReturnDateTime = DateTime.Now, Status = BookAvailability.InStock},
-                new Book {Id = 4, AuthorId = 3, GenreId = 2, ISBN = "978-5-04-099247-8", Name="Murder on the Orient Express", TakeDateTime = new DateTime(2024,01,05,12,45,37), Status = BookAvailability.Taken}
-                ]);
+                new Book {Id = 1, AuthorId = 1, GenreId = 1, ISBN = "9785170654956", Description="Cool book", Name="IT", TakeDateTime = DateTime.Now, ReturnDateTime = DateTime.Now + TimeSpan.FromDays(30),Status = BookAvailability.Taken},
+                new Book {Id = 2, AuthorId = 1, GenreId = 1, ISBN = "9785170624403", Description="Cool book", Name="Carrie", TakeDateTime = DateTime.Now - TimeSpan.FromHours(4),ReturnDateTime=DateTime.Now + TimeSpan.FromDays(30), Status = BookAvailability.Taken},
+                new Book {Id = 3, AuthorId = 2, GenreId = 3, ISBN = "9785171475079", Description="Cool book", Name="Fight Club", TakeDateTime = new DateTime(2023,12,16,16,48,29),ReturnDateTime =DateTime.Now + TimeSpan.FromDays(30), Status = BookAvailability.InStock},
+                new Book {Id = 4, AuthorId = 3, GenreId = 2, ISBN = "9785040992478", Description="Cool book", Name="Murder on the Orient Express", TakeDateTime = new DateTime(2024,01,05,12,45,37),ReturnDateTime= DateTime.Now + TimeSpan.FromDays(30), Status = BookAvailability.Taken}
+             ]);
 
 
             base.OnModelCreating(modelBuilder);

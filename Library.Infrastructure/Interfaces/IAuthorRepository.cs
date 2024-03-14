@@ -9,5 +9,6 @@ namespace Library.Infrastructure.Interfaces
 {
     public interface IAuthorRepository : IGenericRepository<Author>
     {
+        Task<Author> GetByNameAndSurname(string name, string surname);
     }
 }

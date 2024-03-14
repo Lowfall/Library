@@ -9,5 +9,6 @@ namespace Library.Infrastructure.Interfaces
 {
     public interface IGenreRepository : IGenericRepository<Genre>
     {
+        Task<Genre> GetByName(string name);
     }
 }

@@ -41,5 +41,15 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             context.Authors.Update(author);
         }
+
+        public async Task<Author> GetByNameAndSurname(string name, string surname)
+        {
+            return await context.Authors.Where(a => a.Name == name && a.Surname == surname).FirstOrDefaultAsync();
+        }
+
+        public bool Exists(int id)
+        {
+            return context.Authors.Any(a => a.Id == id);
+        }
     }
 }

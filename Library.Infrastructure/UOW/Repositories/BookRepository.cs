@@ -46,5 +46,10 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             context.Books.Update(book);    
         }
+
+        public bool Exists(int id)
+        {
+            return context.Books.Any(b => b.Id == id);
+        }
     }
 }

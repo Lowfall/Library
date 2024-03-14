@@ -52,5 +52,10 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             return context.Users.Any(u => u.Email == email);
         }
+
+        public bool Exists(int id)
+        {
+            return context.Users.Any(b => b.Id == id);
+        }
     }
 }

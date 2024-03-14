@@ -20,6 +20,9 @@ namespace Library.Application.Configuration
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddScoped<IHashService,HashService>();
             services.AddScoped<IJwtTokenService,TokenService>();
+            services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IGenreService, GenreService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(x =>
                 {

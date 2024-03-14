@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Library.Application.DTO;
+using Library.Application.Interfaces;
+using Library.Domain.Entities;
 using Library.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,46 +13,111 @@ namespace Library.WebApi.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        IMapper mapper;
-        IUnitOfWork unitOfWork;
-        public BookController(IMapper mapper, IUnitOfWork unitOfWork)
+        IBookService bookService;
+        public BookController( IBookService bookService)
         {
-            this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
+            this.bookService = bookService;
         }
-        
-           
+
+        [Authorize]
         [HttpGet]
         public IActionResult GetAllBooks()
         {
-            var books = unitOfWork.Books.GetAll().Result.ToList();
-            if(books == null)
-            {
-                return BadRequest("There is no books");
-            }
-            return Ok(mapper.Map<List<BookDTO>>(books));
+            var books = bookService.GetAll();
+
+            return Ok(books);
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetBookById([FromQuery]int id)
         {
-            var book = unitOfWork.Books.Get(id).Result;
-            if(book == null)
-            {
-                return BadRequest("There is no such book with id " + id);
+            try { 
+                var book = bookService.GetById(id);
+                return Ok(book);
             }
-            return Ok(mapper.Map<BookDTO>(book));
+            catch (BadHttpRequestException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult GetBookByISBN([FromQuery]string isbn)
         {
-            var book = unitOfWork.Books.GetByISBN(isbn).Result;
-            if (book == null)
-            {
-                return BadRequest("There is no such book with ISBN " + isbn);
+            try { 
+            var book = bookService.GetByISBN(isbn);
+            return Ok(book);
             }
-            return Ok(mapper.Map<BookDTO>(book));
+            catch (BadHttpRequestException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult AddBook([FromBody]BookDTO bookModel)
+        {
+            try
+            {
+                bookService.Add(bookModel);
+                return Ok("Book added");
+            }
+            catch(BadHttpRequestException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult UpdateBook([FromBody] BookDTO bookModel, [FromQuery]int id)
+        {
+            try
+            {
+                bookService.Update(bookModel,id);
+                return Ok("Book added");
+            }
+            catch (BadHttpRequestException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult DeleteBook([FromQuery]int id)
+        {
+            try { 
+                bookService.Delete(id);
+                return Ok("Book deleted");
+            }
+            catch (BadHttpRequestException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

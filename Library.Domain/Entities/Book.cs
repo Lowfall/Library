@@ -11,13 +11,14 @@ namespace Library.Domain.Entities
     {
         public int Id { get; set; }
         public int GenreId { get; set; }
+        public string Description { get; set; }
         public Genre Genre { get; set; }
         public int AuthorId { get; set; }
         public Author Author { get; set; }
         public string ISBN { get; set; }
         public string Name { get; set; }
         public DateTime? TakeDateTime { get; set; }
-        public DateTime? ReturnDateTime { get { return ReturnDateTime; } set { ReturnDateTime = TakeDateTime + TimeSpan.FromDays(30); } }
+        public  DateTime? ReturnDateTime { get; set; }
         public  BookAvailability Status { get; set; }
     }
 }

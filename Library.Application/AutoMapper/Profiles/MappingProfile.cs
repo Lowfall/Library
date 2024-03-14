@@ -18,9 +18,13 @@ namespace Library.Application.AutoMapper.Profiles
             CreateMap<User, UserDTO>(); 
             CreateMap<UserDTO,User> (); 
             CreateMap<Author, AuthorDTO>();
+            CreateMap<AuthorDTO,Author>();
             CreateMap<Genre, GenreDTO>();
+            CreateMap<GenreDTO, Genre>();
             CreateMap<Book, BookDTO>();
-            
+            CreateMap<BookDTO, Book>();
+
+
         }
     }
 }
