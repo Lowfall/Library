@@ -12,5 +12,7 @@ namespace Library.Infrastructure.Interfaces
         IAuthorRepository Authors { get; }
         IGenreRepository Genres { get; }
         IUserRepository Users { get; }
+
+        public int Save();
     }
 }

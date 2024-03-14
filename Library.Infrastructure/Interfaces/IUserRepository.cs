@@ -9,5 +9,7 @@ namespace Library.Infrastructure.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {
+        Task<User> GetByEmail(string email);
+        bool Exist(string email);
     }
 }

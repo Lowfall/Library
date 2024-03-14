@@ -28,10 +28,16 @@ namespace Library.Infrastructure.UOW.Repositories
             return await context.Users.Where(b => b.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<User> GetByEmail(string email)
+        {
+            return await context.Users.Where(b => b.Email == email).FirstOrDefaultAsync();
+        }
+
         public async Task Add(User user)
         {
             await context.Users.AddAsync(user);
         }
+
         public void Delete(User user)
         {
             context.Users.Remove(user);
@@ -40,6 +46,11 @@ namespace Library.Infrastructure.UOW.Repositories
         public void Update(User user)
         {
             context.Users.Update(user);
+        }
+
+        public bool Exist(string email)
+        {
+            return context.Users.Any(u => u.Email == email);
         }
     }
 }

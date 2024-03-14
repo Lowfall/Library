@@ -2,6 +2,7 @@ using Library.Infrastructure.Data;
 using Library.Infrastructure.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Library.Application.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("MSSqlConnection")).AddApplication();
+builder.Services
+    .AddInfrastructure(builder.Configuration.GetConnectionString("MSSqlConnection"))
+    .AddApplication();
 
 var app = builder.Build();
 
@@ -28,6 +31,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().Create
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
