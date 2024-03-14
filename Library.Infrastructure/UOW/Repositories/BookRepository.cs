@@ -20,15 +20,17 @@ namespace Library.Infrastructure.UOW.Repositories
 
         public async Task<IEnumerable<Book>> GetAll()
         {
-            return await context.Books.ToListAsync(); 
+            return await context.Books.Include(b => b.Author).Include(g=>g.Genre).ToListAsync();
         }
 
         public async Task<Book> Get(int id)
         {
-            var book = context.Books.Where(b => b.Id == id).FirstOrDefaultAsync().Result;
-            book.Author = context.Authors.Where(a => a.Id == book.AuthorId).FirstOrDefaultAsync().Result;
-            book.Genre = context.Genres.Where(g => g.Id == book.GenreId).FirstOrDefaultAsync().Result;
-            return book;
+            return await context.Books.Include(b => b.Author).Include(g => g.Genre).Where(b => b.Id == id).FirstOrDefaultAsync(); 
+        }
+
+        public async Task<Book> GetByISBN(string isbn)
+        {
+            return await context.Books.Include(b => b.Author).Include(g => g.Genre).Where(b => b.ISBN == isbn).FirstOrDefaultAsync();
         }
 
         public async Task Add(Book book)

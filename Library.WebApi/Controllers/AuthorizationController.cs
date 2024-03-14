@@ -6,6 +6,10 @@ using Library.Domain.Entities;
 using Library.Infrastructure.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Library.WebApi.Controllers
 {
@@ -16,11 +20,13 @@ namespace Library.WebApi.Controllers
         IHashService hashService;
         IUnitOfWork unitOfWork;
         IMapper mapper;
-        public AuthorizationController(IHashService hashService, IUnitOfWork unitOfWork,IMapper mapper)
+        IJwtTokenService tokenService;
+        public AuthorizationController(IHashService hashService, IUnitOfWork unitOfWork,IMapper mapper,IJwtTokenService tokenService)
         {
             this.unitOfWork = unitOfWork;
             this.hashService = hashService;
             this.mapper = mapper;
+            this.tokenService = tokenService;
         }
         [HttpPost]
         public IActionResult Register([FromBody] UserDTO model)
@@ -50,15 +56,21 @@ namespace Library.WebApi.Controllers
         public IActionResult Authenticate([FromBody]AuthenticateModel model)
         {
             var user = unitOfWork.Users.GetByEmail(model.Email).Result;
+            
             if (user == null)
             {
                 return BadRequest("There is no such user");
             }
-            if (hashService.VerifyPassword(model.Password,user.Password,user.PasswordSalt))
+            
+            if (!hashService.VerifyPassword(model.Password,user.Password,user.PasswordSalt))
             {
-                return Ok("It works");
+                return BadRequest("Not correct password");
             }
-            return Ok("You authenticated, this is your token : ");
+            var claims = tokenService.GenerateClaims(user);
+            var token = tokenService.GenerateToken(claims, DateTime.Now.Add(TimeSpan.FromMinutes(3)));
+          
+           
+            return Ok("You authenticated, this is your token : " + token);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Library.Application.AutoMapper.Profiles
             CreateMap<Author, AuthorDTO>();
             CreateMap<Genre, GenreDTO>();
             CreateMap<Book, BookDTO>();
+            
         }
     }
 }

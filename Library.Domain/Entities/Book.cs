@@ -17,7 +17,7 @@ namespace Library.Domain.Entities
         public string ISBN { get; set; }
         public string Name { get; set; }
         public DateTime? TakeDateTime { get; set; }
-        public  DateTime? ReturnDateTime { get; set; }
+        public DateTime? ReturnDateTime { get { return ReturnDateTime; } set { ReturnDateTime = TakeDateTime + TimeSpan.FromDays(30); } }
         public  BookAvailability Status { get; set; }
     }
 }

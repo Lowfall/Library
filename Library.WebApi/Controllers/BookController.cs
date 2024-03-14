@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Library.Application.DTO;
 using Library.Infrastructure.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,39 @@ namespace Library.WebApi.Controllers
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
         }
+        
+           
         [HttpGet]
-        public IActionResult GetBook()
+        public IActionResult GetAllBooks()
         {
-            var book = unitOfWork.Books.Get(1).Result;
-            var bookdto = mapper.Map<BookDTO>(book);
+            var books = unitOfWork.Books.GetAll().Result.ToList();
+            if(books == null)
+            {
+                return BadRequest("There is no books");
+            }
+            return Ok(mapper.Map<List<BookDTO>>(books));
+        }
 
-            return Ok(bookdto);
+        [HttpGet]
+        public IActionResult GetBookById([FromQuery]int id)
+        {
+            var book = unitOfWork.Books.Get(id).Result;
+            if(book == null)
+            {
+                return BadRequest("There is no such book with id " + id);
+            }
+            return Ok(mapper.Map<BookDTO>(book));
+        }
+
+        [HttpGet]
+        public IActionResult GetBookByISBN([FromQuery]string isbn)
+        {
+            var book = unitOfWork.Books.GetByISBN(isbn).Result;
+            if (book == null)
+            {
+                return BadRequest("There is no such book with ISBN " + isbn);
+            }
+            return Ok(mapper.Map<BookDTO>(book));
         }
     }
 }

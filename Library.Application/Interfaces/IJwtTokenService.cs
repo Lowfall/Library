@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Library.Infrastructure.Interfaces
+namespace Library.Application.Interfaces
 {
-    public interface IBookRepository : IGenericRepository<Book>
+    public interface IJwtTokenService : IGenericTokenService<User>
     {
-        Task<Book> GetByISBN(string ISBN);
     }
 }
