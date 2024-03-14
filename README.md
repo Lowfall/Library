@@ -1,7 +1,7 @@
 # Start up
 
 To start up you dont need to do smth, database will be created automatically. 
-> The only thing you must have is MSSQL
+> The only thing you must have is MSSQL and PLEASE CHECK THAT START UP PROJECT IS Library.WebApi
 
 # Usage
 
