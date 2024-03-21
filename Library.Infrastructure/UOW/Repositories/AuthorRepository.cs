@@ -4,6 +4,7 @@ using Library.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,18 +24,25 @@ namespace Library.Infrastructure.UOW.Repositories
             return await context.Authors.ToListAsync();
         }
 
+        public async Task<IEnumerable<Author>> GetAll(int page)
+        {
+            return await context.Authors.Skip(page*10).Take(10).ToListAsync();
+        }
+
         public async Task<Author> Get(int id)
         {
             return await context.Authors.Where(b => b.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task Add(Author author)
+        public void Add(Author author)
         {
-            await context.Authors.AddAsync(author);
+            context.Authors.AddAsync(author);
         }
-        public void Delete(Author author)
+        public void Delete(int id)
         {
-            context.Authors.Remove(author);
+            var author = context.Authors.Find(id);
+            if(author == null) throw new Exception("There is no author with id " + id);
+            else context.Authors.Remove(author);
         }
 
         public void Update(Author author)

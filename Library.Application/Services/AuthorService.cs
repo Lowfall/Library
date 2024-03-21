@@ -28,20 +28,15 @@ namespace Library.Application.Services
             unitOfWork.Save();
         }
 
-        public void Delete(int id)
+        public async void Delete(int id)
         {
-            var author = unitOfWork.Authors.Get(id).Result;
-            if (author == null)
-            {
-                throw new BadHttpRequestException("There is no authors with id " + id);
-            }
-            unitOfWork.Authors.Delete(author);
+            unitOfWork.Authors.Delete(id);
             unitOfWork.Save();
         }
 
-        public IEnumerable<AuthorDTO> GetAll()
+        public async Task<IEnumerable<AuthorDTO>> GetAll()
         {
-            var authors = unitOfWork.Authors.GetAll().Result;
+            var authors = await unitOfWork.Authors.GetAll();
             if (authors == null)
             {
                 throw new BadHttpRequestException("There is no authors");
@@ -49,9 +44,19 @@ namespace Library.Application.Services
             return mapper.Map<List<AuthorDTO>>(authors);
         }
 
-        public AuthorDTO GetById(int id)
+        public async Task<IEnumerable<AuthorDTO>> GetAll(int page)
         {
-            var author = unitOfWork.Authors.Get(id).Result;
+            var authors = await unitOfWork.Authors.GetAll(page);
+            if (authors == null)
+            {
+                throw new BadHttpRequestException("There is no authors");
+            }
+            return mapper.Map<List<AuthorDTO>>(authors);
+        }
+
+        public async Task<AuthorDTO> GetById(int id)
+        {
+            var author = await unitOfWork.Authors.Get(id);
             if (author == null)
             {
                 throw new BadHttpRequestException("There is no authors with id "+ id);

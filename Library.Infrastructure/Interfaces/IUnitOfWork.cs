@@ -15,6 +15,6 @@ namespace Library.Infrastructure.Interfaces
         IGenreRepository Genres { get; }
         IUserRepository Users { get; }
 
-        public int Save();
+        public void Save();
     }
 }

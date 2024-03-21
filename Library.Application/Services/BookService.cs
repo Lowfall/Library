@@ -22,9 +22,9 @@ namespace Library.Application.Services
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
-        public BookDTO GetById(int id)
+        public async Task<BookDTO> GetById(int id)
         {
-            var book = unitOfWork.Books.Get(id).Result;
+            var book = await unitOfWork.Books.Get(id);
             if (book == null)
             {
                 throw new BadHttpRequestException("There is no such book with id " + id);
@@ -32,9 +32,9 @@ namespace Library.Application.Services
             return mapper.Map<BookDTO>(book);
         }
 
-        public IEnumerable<BookDTO> GetAll()
+        public async Task<IEnumerable<BookDTO>> GetAll()
         {
-            var books = unitOfWork.Books.GetAll().Result;
+            var books = await unitOfWork.Books.GetAll();
             if (books == null)
             {
                 throw new BadHttpRequestException("There is no books");
@@ -42,9 +42,19 @@ namespace Library.Application.Services
             return mapper.Map<List<BookDTO>>(books);
         }
 
-        public BookDTO GetByISBN(string isbn)
+        public async Task<IEnumerable<BookDTO>> GetAll(int page)
         {
-            var book = unitOfWork.Books.GetByISBN(isbn).Result;
+            var books = await unitOfWork.Books.GetAll(page);
+            if (books == null)
+            {
+                throw new BadHttpRequestException("There is no books");
+            }
+            return mapper.Map<List<BookDTO>>(books);
+        }
+
+        public async Task<BookDTO> GetByISBN(string isbn)
+        {
+            var book = await unitOfWork.Books.GetByISBN(isbn);
             if (book == null)
             {
                 throw new BadHttpRequestException("There is no such book with ISBN " + isbn);
@@ -97,12 +107,7 @@ namespace Library.Application.Services
 
         public void Delete(int id)
         {
-            var book = unitOfWork.Books.Get(id).Result;
-            if (book == null)
-            {
-                throw new BadHttpRequestException("There is no such book with id " + id);
-            }
-            unitOfWork.Books.Delete(book);
+            unitOfWork.Books.Delete(id);
             unitOfWork.Save();
         }
     }

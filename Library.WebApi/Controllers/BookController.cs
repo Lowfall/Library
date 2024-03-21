@@ -14,110 +14,62 @@ namespace Library.WebApi.Controllers
     public class BookController : ControllerBase
     {
         IBookService bookService;
-        public BookController( IBookService bookService)
+        public BookController(IBookService bookService)
         {
             this.bookService = bookService;
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetAllBooks()
+        public async Task<IActionResult> GetAllBooks()
         {
-            var books = bookService.GetAll();
-
-            return Ok(books);
+            return Ok(await bookService.GetAll());
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetBookById([FromQuery]int id)
+        [Route("{page}")]
+        public async Task<IActionResult> GetAllBooks(int page)
         {
-            try { 
-                var book = bookService.GetById(id);
-                return Ok(book);
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(await bookService.GetAll(page));
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetBookByISBN([FromQuery]string isbn)
+        public async Task<IActionResult> GetBookById([FromQuery]int id)
         {
-            try { 
-            var book = bookService.GetByISBN(isbn);
-            return Ok(book);
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(await bookService.GetById(id));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetBookByISBN([FromQuery]string isbn)
+        {
+            return Ok(await bookService.GetByISBN(isbn));
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult AddBook([FromBody]BookDTO bookModel)
         {
-            try
-            {
-                bookService.Add(bookModel);
-                return Ok("Book added");
-            }
-            catch(BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            bookService.Add(bookModel);
+            return Ok("Book added");
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult UpdateBook([FromBody] BookDTO bookModel, [FromQuery]int id)
         {
-            try
-            {
-                bookService.Update(bookModel,id);
-                return Ok("Book added");
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            bookService.Update(bookModel,id);
+            return Ok("Book added");
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult DeleteBook([FromQuery]int id)
         {
-            try { 
-                bookService.Delete(id);
-                return Ok("Book deleted");
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            bookService.Delete(id);
+            return Ok("Book deleted");
         }
     }
 }

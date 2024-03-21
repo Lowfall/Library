@@ -22,6 +22,10 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             return await context.Books.Include(b => b.Author).Include(g=>g.Genre).ToListAsync();
         }
+        public async Task<IEnumerable<Book>> GetAll(int page)
+        {
+            return await context.Books.Include(b => b.Author).Include(g => g.Genre).Skip(page * 10).Take(10).ToListAsync();
+        }
 
         public async Task<Book> Get(int id)
         {
@@ -33,13 +37,15 @@ namespace Library.Infrastructure.UOW.Repositories
             return await context.Books.Include(b => b.Author).Include(g => g.Genre).Where(b => b.ISBN == isbn).FirstOrDefaultAsync();
         }
 
-        public async Task Add(Book book)
+        public void Add(Book book)
         {
-            await context.Books.AddAsync(book); 
+           context.Books.AddAsync(book); 
         }
-        public void Delete(Book book)
+        public void Delete(int id)
         {
-            context.Books.Remove(book);
+            var book = context.Books.Find(id);
+            if (book == null) throw new Exception("There is no book with id " + id);
+            else context.Books.Remove(book);
         }
 
         public void Update(Book book)

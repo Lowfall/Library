@@ -22,19 +22,25 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             return await context.Genres.ToListAsync();
         }
+        public async Task<IEnumerable<Genre>> GetAll(int page)
+        {
+            return await context.Genres.Skip(page * 10).Take(10).ToListAsync();
+        }
 
         public async Task<Genre> Get(int id)
         {
             return await context.Genres.Where(b => b.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task Add(Genre genre)
+        public void Add(Genre genre)
         {
-            await context.Genres.AddAsync(genre);
+            context.Genres.AddAsync(genre);
         }
-        public void Delete(Genre genre)
+        public void Delete(int id)
         {
-            context.Genres.Remove(genre);
+            var genre = context.Genres.Find(id);
+            if (genre == null) throw new Exception("There is no genre with id " + id);
+            else context.Genres.Remove(genre);
         }
 
         public void Update(Genre genre)

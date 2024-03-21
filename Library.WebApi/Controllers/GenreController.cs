@@ -18,77 +18,39 @@ namespace Library.WebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                var genres = genreService.GetAll();
-                return Ok(genres);
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(await genreService.GetAll());
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetGenre(int id)
+        [Route("{page}")]
+        public async Task<IActionResult> GetAll(int page)
         {
-            try
-            {
-                var genre = genreService.GetById(id);
-                return Ok(genre);
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(await genreService.GetAll(page));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetGenre(int id)
+        {
+            return Ok(await genreService.GetById(id));
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult DeleteGenre(int id) {
-            try
-            {
-                genreService.Delete(id);
-                return Ok("Genre deleted");
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            genreService.Delete(id);
+            return Ok("Genre deleted");
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult AddGenre(GenreDTO genre)
         {
-            try
-            {
-               genreService.Add(genre);
-                return Ok("Genre added");
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            genreService.Add(genre);
+            return Ok("Genre added");
         }
     }
 }

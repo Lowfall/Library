@@ -10,8 +10,9 @@ namespace Library.Infrastructure.Interfaces
     {
         Task<T> Get(int id);
         Task<IEnumerable<T>> GetAll();
-        Task Add(T entity);
-        void Delete(T entity);
+        Task<IEnumerable<T>> GetAll(int page);
+        void Add(T entity);
+        void Delete(int id);
         void Update(T entity);
         bool Exists(int id);
     }

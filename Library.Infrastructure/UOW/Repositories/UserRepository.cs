@@ -23,6 +23,11 @@ namespace Library.Infrastructure.UOW.Repositories
             return await context.Users.ToListAsync();
         }
 
+        public async Task<IEnumerable<User>> GetAll(int page)
+        {
+            return await context.Users.Skip(page * 10).Take(10).ToListAsync();
+        }
+
         public async Task<User> Get(int id)
         {
             return await context.Users.Where(b => b.Id == id).FirstOrDefaultAsync();
@@ -33,14 +38,16 @@ namespace Library.Infrastructure.UOW.Repositories
             return await context.Users.Where(b => b.Email == email).FirstOrDefaultAsync();
         }
 
-        public async Task Add(User user)
+        public void Add(User user)
         {
-            await context.Users.AddAsync(user);
+            context.Users.AddAsync(user);
         }
 
-        public void Delete(User user)
+        public void Delete(int id)
         {
-            context.Users.Remove(user);
+            var user = context.Users.Find(id);
+            if (user == null) throw new Exception("There is no user with id " + id);
+            else context.Users.Remove(user);
         }
 
         public void Update(User user)

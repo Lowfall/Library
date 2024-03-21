@@ -8,8 +8,9 @@ namespace Library.Application.Interfaces
 {
     public interface IModelService<T> where T: class
     {
-        IEnumerable<T> GetAll();
-        T GetById(int id);
+        Task<IEnumerable<T>> GetAll();
+        Task<IEnumerable<T>> GetAll(int page);
+        Task<T> GetById(int id);
         void Add(T obj);
         void Delete(int id);    
     }

@@ -25,9 +25,9 @@ namespace Library.Infrastructure.UOW
             this.Genres = genres;
             this.Users = users;
         }
-        public int Save()
+        public void Save()
         {
-            return context.SaveChanges();
+            context.SaveChanges();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Library.Application.Interfaces
 {
     public interface IBookService : IModelService<BookDTO>
     {
-       BookDTO GetByISBN(string isbn);
+        Task<BookDTO> GetByISBN(string isbn);
         void Update(BookDTO obj, int id);
     }
 }

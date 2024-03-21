@@ -36,18 +36,13 @@ namespace Library.Application.Services
 
         public void Delete(int id)
         {
-            var genre = unitOfWork.Genres.Get(id).Result;
-            if (genre == null)
-            {
-                throw new BadHttpRequestException("There is no genre with id " + id);
-            }
-            unitOfWork.Genres.Delete(genre);
+            unitOfWork.Genres.Delete(id);
             unitOfWork.Save();
         }
 
-        public IEnumerable<GenreDTO> GetAll()
+        public async Task<IEnumerable<GenreDTO>> GetAll()
         {
-            var genres = unitOfWork.Genres.GetAll().Result;
+            var genres = await unitOfWork.Genres.GetAll();
             if (genres == null)
             {
                 throw new BadHttpRequestException("There is no genres");
@@ -55,9 +50,19 @@ namespace Library.Application.Services
             return  mapper.Map<List<GenreDTO>>(genres);
         }
 
-        public GenreDTO GetById(int id)
+        public async Task<IEnumerable<GenreDTO>> GetAll(int page)
         {
-            var genre = unitOfWork.Genres.Get(id).Result;
+            var genres = await unitOfWork.Genres.GetAll(page);
+            if (genres == null)
+            {
+                throw new BadHttpRequestException("There is no genres");
+            }
+            return mapper.Map<List<GenreDTO>>(genres);
+        }
+
+        public async Task<GenreDTO> GetById(int id)
+        {
+            var genre = await unitOfWork.Genres.Get(id);
             if (genre == null)
             {
                 throw new BadHttpRequestException("There is no genre with id " + id);

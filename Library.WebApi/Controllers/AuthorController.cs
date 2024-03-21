@@ -19,75 +19,40 @@ namespace Library.WebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                return Ok(authorService.GetAll());
-            }
-            catch( BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(await authorService.GetAll());
         }
 
         [Authorize]
         [HttpGet]
-        public IActionResult GetAuthor(int id)
+        [Route("{page}")]
+        public async Task<IActionResult> GetAll(int page)
         {
-            try
-            {
-                return Ok(authorService.GetById(id));
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(await authorService.GetAll(page));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAuthor(int id)
+        {
+            return Ok(await authorService.GetById(id));
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult AddAuthor(AuthorDTO author)
         {
-            try
-            {
-                authorService.Add(author);
-                return Ok("Author added");
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            authorService.Add(author);
+            return Ok("Author added");
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult DeleteAuthor(int id) {
-            try
-            {
-                authorService.Delete(id);
-                return Ok("Author deleted");
-            }
-            catch (BadHttpRequestException e)
-            {
-                return BadRequest(e.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+        public IActionResult DeleteAuthor(int id) 
+        {
+            authorService.Delete(id);
+            return Ok("Author deleted");
         }
     }
 }
