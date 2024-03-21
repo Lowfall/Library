@@ -22,11 +22,11 @@ namespace Library.Infrastructure.Configuration
                 options.UseSqlServer(connectionString);
             });
 
-            services.AddTransient<IBookRepository, BookRepository>();
-            services.AddTransient<IAuthorRepository, AuthorRepository>();
-            services.AddTransient<IGenreRepository, GenreRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             return services;
         }
