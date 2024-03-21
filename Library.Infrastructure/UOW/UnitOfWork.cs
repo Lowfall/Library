@@ -29,10 +29,5 @@ namespace Library.Infrastructure.UOW
         {
             return context.SaveChanges();
         }
-
-        public void Dispose()
-        {
-            context.Dispose();
-        }
     }
 }

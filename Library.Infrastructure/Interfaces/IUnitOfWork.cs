@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         ApplicationDbContext context { get; }
         IBookRepository Books { get; }
