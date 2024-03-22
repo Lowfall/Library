@@ -25,7 +25,7 @@ namespace Library.Infrastructure.UOW.Repositories
 
         public async Task<IEnumerable<User>> GetAll(int page)
         {
-            return await context.Users.Skip(page * 10).Take(10).ToListAsync();
+            return await context.Users.Skip((page - 1) * 10).Take(10).ToListAsync();
         }
 
         public async Task<User> Get(int id)
@@ -43,11 +43,9 @@ namespace Library.Infrastructure.UOW.Repositories
             context.Users.AddAsync(user);
         }
 
-        public void Delete(int id)
+        public void Delete(User user)
         {
-            var user = context.Users.Find(id);
-            if (user == null) throw new Exception("There is no user with id " + id);
-            else context.Users.Remove(user);
+            context.Users.Remove(user);
         }
 
         public void Update(User user)
@@ -63,6 +61,11 @@ namespace Library.Infrastructure.UOW.Repositories
         public bool Exists(int id)
         {
             return context.Users.Any(b => b.Id == id);
+        }
+
+        public int GetAmount()
+        {
+            return context.Users.Count();
         }
     }
 }

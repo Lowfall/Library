@@ -24,7 +24,7 @@ namespace Library.Infrastructure.UOW.Repositories
         }
         public async Task<IEnumerable<Genre>> GetAll(int page)
         {
-            return await context.Genres.Skip(page * 10).Take(10).ToListAsync();
+            return await context.Genres.Skip((page - 1) * 10).Take(10).ToListAsync();
         }
 
         public async Task<Genre> Get(int id)
@@ -36,11 +36,9 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             context.Genres.AddAsync(genre);
         }
-        public void Delete(int id)
+        public void Delete(Genre genre)
         {
-            var genre = context.Genres.Find(id);
-            if (genre == null) throw new Exception("There is no genre with id " + id);
-            else context.Genres.Remove(genre);
+            context.Genres.Remove(genre);
         }
 
         public void Update(Genre genre)
@@ -56,6 +54,11 @@ namespace Library.Infrastructure.UOW.Repositories
         public bool Exists(int id)
         {
             return context.Genres.Any(g => g.Id == id);
+        }
+
+        public int GetAmount()
+        {
+            return context.Genres.Count();
         }
     }
 }

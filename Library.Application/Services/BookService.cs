@@ -49,6 +49,10 @@ namespace Library.Application.Services
             {
                 throw new BadHttpRequestException("There is no books");
             }
+            if (books.Count() == 0)
+            {
+                throw new BadHttpRequestException("There is no books");
+            }
             return mapper.Map<List<BookDTO>>(books);
         }
 
@@ -107,7 +111,9 @@ namespace Library.Application.Services
 
         public void Delete(int id)
         {
-            unitOfWork.Books.Delete(id);
+            var book = unitOfWork.context.Books.Find(id);
+            if (book == null) throw new BadHttpRequestException("There is no user with id " + id);
+            unitOfWork.Books.Delete(book);
             unitOfWork.Save();
         }
     }

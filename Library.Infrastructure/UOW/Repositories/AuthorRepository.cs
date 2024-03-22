@@ -26,7 +26,7 @@ namespace Library.Infrastructure.UOW.Repositories
 
         public async Task<IEnumerable<Author>> GetAll(int page)
         {
-            return await context.Authors.Skip(page*10).Take(10).ToListAsync();
+            return await context.Authors.Skip((page-1)*10).Take(10).ToListAsync();
         }
 
         public async Task<Author> Get(int id)
@@ -38,11 +38,9 @@ namespace Library.Infrastructure.UOW.Repositories
         {
             context.Authors.AddAsync(author);
         }
-        public void Delete(int id)
+        public void Delete(Author author)
         {
-            var author = context.Authors.Find(id);
-            if(author == null) throw new Exception("There is no author with id " + id);
-            else context.Authors.Remove(author);
+            context.Authors.Remove(author);
         }
 
         public void Update(Author author)
@@ -58,6 +56,10 @@ namespace Library.Infrastructure.UOW.Repositories
         public bool Exists(int id)
         {
             return context.Authors.Any(a => a.Id == id);
+        }
+        public int GetAmount()
+        {
+            return context.Authors.Count();
         }
     }
 }

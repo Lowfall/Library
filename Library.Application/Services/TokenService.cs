@@ -1,5 +1,6 @@
 ﻿using Library.Application.Interfaces;
 using Library.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Library.Application.Services
         {
             if(expiresTime < DateTime.Now)
             {
-                throw new Exception("Not Correct time");
+                throw new BadHttpRequestException("Not Correct time");
             }
             var jwt = new JwtSecurityToken(
                    issuer: "LibraryServer",

@@ -36,7 +36,9 @@ namespace Library.Application.Services
 
         public void Delete(int id)
         {
-            unitOfWork.Genres.Delete(id);
+            var genre = unitOfWork.context.Genres.Find(id);
+            if (genre == null) throw new BadHttpRequestException("There is no genre with id " + id);
+            unitOfWork.Genres.Delete(genre);
             unitOfWork.Save();
         }
 
@@ -54,6 +56,10 @@ namespace Library.Application.Services
         {
             var genres = await unitOfWork.Genres.GetAll(page);
             if (genres == null)
+            {
+                throw new BadHttpRequestException("There is no genres");
+            }
+            if (genres.Count() == 0)
             {
                 throw new BadHttpRequestException("There is no genres");
             }

@@ -28,9 +28,14 @@ namespace Library.Application.Services
             unitOfWork.Save();
         }
 
-        public async void Delete(int id)
+        public void Delete(int id)
         {
-            unitOfWork.Authors.Delete(id);
+            var author = unitOfWork.context.Authors.Find(id);
+            if (author == null)
+            {
+                throw new BadHttpRequestException("There is no author with id " + id);
+            }
+            unitOfWork.Authors.Delete(author);
             unitOfWork.Save();
         }
 
@@ -48,6 +53,10 @@ namespace Library.Application.Services
         {
             var authors = await unitOfWork.Authors.GetAll(page);
             if (authors == null)
+            {
+                throw new BadHttpRequestException("There is no authors");
+            }
+            if (authors.Count() == 0)
             {
                 throw new BadHttpRequestException("There is no authors");
             }
